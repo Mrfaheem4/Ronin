@@ -1,1 +1,26 @@
 @import "tailwindcss";
+
+@font-face {
+  font-family: "Japanese";
+  src: url("/fonts/Japanese.woff") format("woff");
+}
+
+@font-face {
+  font-family: "KongJapanese";
+  src: url("/fonts/Kong Japanese.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Sekaiwo";
+  src: url("/fonts/Sekaiwo.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Toragon";
+  src: url("/fonts/Toragon.woff") format("woff");
+}
+
+@font-face {
+  font-family: "Uminari";
+  src: url("/fonts/Uminari.woff") format("woff");
+}

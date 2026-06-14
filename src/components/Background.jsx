@@ -1,30 +1,65 @@
+import { useEffect, useState } from "react";
+
 function Background() {
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const trigger = () => {
+      if (!started) {
+        setStarted(true);
+      }
+    };
+
+    const handleScroll = () => {
+      if (window.scrollY > 10) trigger();
+    };
+
+    const handleWheel = (e) => {
+      if (e.deltaY !== 0) trigger();
+    };
+
+    const handleTouch = () => trigger();
+
+    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("wheel", handleWheel);
+    window.addEventListener("touchstart", handleTouch);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("wheel", handleWheel);
+      window.removeEventListener("touchstart", handleTouch);
+    };
+  }, [started]);
+
   return (
-    <div className="relative w-screen h-screen overflow-hidden">
+    <div className="fixed inset-0 w-screen h-screen -z-10">
       <img
         src="/images/background3.png"
-        alt="Background"
-        className="w-full h-full object-cover grayscale"
-        style={{ filter: "grayscale(100%) brightness(0.2)" }}
+        className="w-full h-full object-cover"
+        style={{ filter: "grayscale(100%) brightness(0)" }}
+        alt="Background Dark"
       />
 
-      <div
-        className="absolute inset-0"
-        style={{
-          maskImage: "url(/images/mask.gif)",
-          WebkitMaskImage: "url(/images/mask.gif)",
-          maskSize: "cover",
-          WebkitMaskSize: "cover",
-          maskRepeat: "no-repeat",
-          WebkitMaskRepeat: "no-repeat",
-        }}
-      >
-        <img
-          src="/images/background3.png"
-          alt="Background Color"
-          className="w-full h-full object-cover"
-        />
-      </div>
+      {started && (
+        <div
+          className="absolute inset-0"
+          style={{
+            maskImage: "url(/images/mask.gif)",
+            WebkitMaskImage: "url(/images/mask.gif)",
+            maskSize: "cover",
+            WebkitMaskSize: "cover",
+            maskRepeat: "no-repeat",
+            WebkitMaskRepeat: "no-repeat",
+            animation: "fadeIn 4s ease forwards",
+          }}
+        >
+          <img
+            src="/images/background3.png"
+            className="w-full h-full object-cover"
+            alt="Background Color"
+          />
+        </div>
+      )}
     </div>
   );
 }
