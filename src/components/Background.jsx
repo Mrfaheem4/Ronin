@@ -6,7 +6,7 @@ function Background() {
 
   // Audio setup
   useEffect(() => {
-    audioRef.current = new Audio("/audio/burn.mp3");
+    audioRef.current = new Audio("public/audio/burn.mp3");
     audioRef.current.volume = 0.9;
   }, []);
 

@@ -21,6 +21,14 @@
 }
 
 @font-face {
-  font-family: "Uminari";
-  src: url("/fonts/Uminari.woff") format("woff");
+  font-family: "MingImperial";
+  src: url("/fonts/MingImperial.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Mashiro";
+  src: url("/fonts/Mashiro.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Harukaze";
+  src: url("/fonts/Harukaze.woff2") format("woff2");
 }

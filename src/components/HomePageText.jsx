@@ -54,7 +54,7 @@ export default function HomePageText() {
     >
       <p
         style={{
-          fontFamily: "Japanese",
+          fontFamily: "MingImperial",
           fontSize: "12vh",
           color: "#666263",
           letterSpacing: "0.2em",
@@ -82,7 +82,6 @@ export default function HomePageText() {
           opacity: 0.8,
         }}
       >
-        {/* Top line */}
         <div
           style={{
             position: "absolute",
@@ -94,8 +93,6 @@ export default function HomePageText() {
               "linear-gradient(to right, transparent, #6b4a1e, transparent)",
           }}
         />
-
-        {/* Bottom line */}
         <div
           style={{
             position: "absolute",
@@ -110,15 +107,16 @@ export default function HomePageText() {
 
         <p
           style={{
-            fontFamily: "Japanese",
+            fontFamily: "Mashiro",
             color: "white",
             textAlign: "center",
             letterSpacing: "0.2em",
+            fontSize: "1.5rem",
           }}
         >
-          The path of the ronin is not one of shadows,
+          The path of the ronin is not one of shadows,,
           <br />
-          but of cold, relentless purpose.
+          But of cold, relentless purpose.
         </p>
       </div>
     </div>
