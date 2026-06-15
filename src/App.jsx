@@ -1,8 +1,6 @@
 import { useEffect } from "react";
-import Background from "./components/Background";
-import Subject from "./components/Subject";
-import ScrollPrompt from "./components/ScrollPrompt";
-import HomePageText from "./components/HomePageText";
+import FirstPage from "./pages/FirstPage";
+// import SecondPage from "./pages/SecondPage/SecondPage";
 
 function App() {
   useEffect(() => {
@@ -11,10 +9,8 @@ function App() {
 
   return (
     <>
-      <Background />
-      <HomePageText />
-      <Subject />
-      <ScrollPrompt />
+      <FirstPage />
+      {/* <SecondPage /> */}
     </>
   );
 }
