@@ -54,8 +54,7 @@ export default function Subject() {
       <img
         src="/images/closeup_bg.png"
         alt="Subject"
-        className="h-[80vh] w-auto object-contain"
-        pointer-events-none
+        className="h-[80vh] w-auto object-contain pointer-none:"
         style={{
           filter: started
             ? "grayscale(0%) brightness(1)"

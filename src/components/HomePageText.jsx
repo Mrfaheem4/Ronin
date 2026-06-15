@@ -33,11 +33,10 @@ export default function HomePageText() {
     };
   }, []);
 
-  // Don't render at all until triggered
   if (!triggered.current && !visible) {
     return (
       <div
-        className="fixed inset-0 flex justify-center pointer-events-none"
+        className="fixed inset-0 pointer-events-none"
         style={{ zIndex: 10, opacity: 0 }}
       />
     );
@@ -45,7 +44,7 @@ export default function HomePageText() {
 
   return (
     <div
-      className="fixed inset-0 flex justify-center pointer-events-none"
+      className="fixed inset-0 pointer-events-none"
       style={{
         zIndex: 10,
         opacity: visible ? 1 : 0,
@@ -60,10 +59,68 @@ export default function HomePageText() {
           color: "#666263",
           letterSpacing: "0.2em",
           textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+          textAlign: "center",
+          width: "100%",
+          position: "absolute",
         }}
       >
         Ronin
       </p>
+
+      <div
+        style={{
+          position: "absolute",
+          top: "58%",
+          left: "6%",
+          background:
+            "linear-gradient(to right, #1a1008, #2d1f0e 8%, #241508 50%, #2d1f0e 92%, #1a1008)",
+          border: "1px solid #3a2510",
+          borderLeft: "none",
+          borderRight: "none",
+          padding: "2rem 3rem",
+          maxWidth: "420px",
+          opacity: 0.8,
+        }}
+      >
+        {/* Top line */}
+        <div
+          style={{
+            position: "absolute",
+            top: "12px",
+            left: "10%",
+            right: "10%",
+            height: "1px",
+            background:
+              "linear-gradient(to right, transparent, #6b4a1e, transparent)",
+          }}
+        />
+
+        {/* Bottom line */}
+        <div
+          style={{
+            position: "absolute",
+            bottom: "12px",
+            left: "10%",
+            right: "10%",
+            height: "1px",
+            background:
+              "linear-gradient(to right, transparent, #6b4a1e, transparent)",
+          }}
+        />
+
+        <p
+          style={{
+            fontFamily: "Japanese",
+            color: "white",
+            textAlign: "center",
+            letterSpacing: "0.2em",
+          }}
+        >
+          The path of the ronin is not one of shadows,
+          <br />
+          but of cold, relentless purpose.
+        </p>
+      </div>
     </div>
   );
 }

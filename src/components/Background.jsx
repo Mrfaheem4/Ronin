@@ -1,23 +1,30 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 function Background() {
   const [started, setStarted] = useState(false);
+  const audioRef = useRef(null);
 
+  // Audio setup
+  useEffect(() => {
+    audioRef.current = new Audio("/audio/burn.mp3");
+    audioRef.current.volume = 0.9;
+  }, []);
+
+  // Scroll trigger
   useEffect(() => {
     const trigger = () => {
       if (!started) {
         setStarted(true);
+        audioRef.current?.play();
       }
     };
 
     const handleScroll = () => {
       if (window.scrollY > 10) trigger();
     };
-
     const handleWheel = (e) => {
       if (e.deltaY !== 0) trigger();
     };
-
     const handleTouch = () => trigger();
 
     window.addEventListener("scroll", handleScroll);
