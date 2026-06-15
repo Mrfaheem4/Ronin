@@ -117,7 +117,7 @@ export default function FirstPage() {
 
       {/* ── HomePageText ── */}
       <div
-        className="absolute inset-0 pointer-events-none z-10 transition-opacity duration-[1500ms] ease-in-out"
+        className="absolute inset-0 pointer-events-none z-2 transition-opacity duration-[1500ms] ease-in-out"
         style={{
           opacity: visible ? 1 : 0,
           transform: `translateY(${scrollY * 0.3}px) translate(${mouse.x * 5}px, ${mouse.y * 3}px)`,
@@ -156,8 +156,8 @@ export default function FirstPage() {
             }}
           />
           <p
-            className="text-white text-center tracking-[0.2em] text-2xl"
-            style={{ fontFamily: "Mashiro" }}
+            className="text-white text-center tracking-[0.2em] text-xl"
+            style={{ fontFamily: "Japanese" }}
           >
             The path of the Ronin is not one of shadows,,
             <br />
