@@ -1,169 +1,158 @@
-import { useEffect, useState, useRef } from "react";
-import { useScrollParallax, useMouseParallax } from "../hooks/useParallax";
+import { useEffect, useState, useRef, useMemo } from "react";
+// import { useScrollParallax, useMouseParallax } from "../hooks/useParallax";
 import ScrollPrompt from "../components/ScrollPrompt";
+import SmokeLayer from "../components/Smoke";
+
+const KANJI = [
+  "刀",
+  "侍",
+  "血",
+  "死",
+  "闇",
+  "剣",
+  "魂",
+  "義",
+  "道",
+  "罪",
+  "恥",
+  "怒",
+  "悲",
+  "誇",
+  "忠",
+  "武",
+  "影",
+  "夜",
+  "風",
+  "炎",
+  "鬼",
+  "龍",
+  "天",
+  "火",
+];
 
 export default function FirstPage() {
   const [started, setStarted] = useState(false);
   const [visible, setVisible] = useState(false);
-  const audioRef = useRef(null);
+  const [particles, setParticles] = useState([]);
+
   const triggered = useRef(false);
+  // const scrollY = useScrollParallax();
+  // const mouse = useMouseParallax();
 
-  const scrollY = useScrollParallax();
-  const mouse = useMouseParallax();
-
-  // Audio setup
+  // Kanji particles
   useEffect(() => {
-    audioRef.current = new Audio("/audio/burn.mp3");
-    audioRef.current.volume = 0.9;
+    const interval = setInterval(() => {
+      const id = Date.now() + Math.random();
+      const duration = Math.random() * 3 + 2;
+      const newParticle = {
+        id,
+        word: KANJI[Math.floor(Math.random() * KANJI.length)],
+        size: Math.random() * 48 + 16,
+        left: Math.random() * 88 + 2,
+        top: Math.random() * 80 + 5,
+        duration,
+      };
+      setParticles((prev) => [...prev.slice(-20), newParticle]);
+      setTimeout(() => {
+        setParticles((prev) => prev.filter((p) => p.id !== id));
+      }, duration * 1000);
+    }, 400);
+    return () => clearInterval(interval);
   }, []);
 
-  // Single scroll trigger
+  // Scroll trigger
   useEffect(() => {
     const trigger = () => {
       if (triggered.current) return;
       triggered.current = true;
-
       setStarted(true);
-      audioRef.current?.play();
-      setTimeout(() => setVisible(true), 5660);
+      setTimeout(() => setVisible(true), 3000);
     };
-
-    const handleScroll = () => {
-      if (window.scrollY > 10) trigger();
-    };
-    const handleWheel = (e) => {
-      if (e.deltaY !== 0) trigger();
-    };
-    const handleTouch = () => trigger();
-
-    window.addEventListener("scroll", handleScroll);
-    window.addEventListener("wheel", handleWheel);
-    window.addEventListener("touchstart", handleTouch);
-
+    window.addEventListener("scroll", trigger, { passive: true });
+    window.addEventListener("wheel", trigger, { passive: true });
+    window.addEventListener("touchstart", trigger, { passive: true });
     return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("wheel", handleWheel);
-      window.removeEventListener("touchstart", handleTouch);
+      window.removeEventListener("scroll", trigger);
+      window.removeEventListener("wheel", trigger);
+      window.removeEventListener("touchstart", trigger);
     };
   }, []);
 
   return (
     <section className="relative w-screen h-screen overflow-hidden">
       <ScrollPrompt visible={!started} />
-      {/* ── Background ── */}
-      <div className="absolute inset-0 w-full h-full -z-10">
-        <img
-          src="/images/background3.png"
-          className="w-full h-full object-cover"
-          style={{ filter: "grayscale(100%) brightness(0)" }}
-          alt="Background Dark"
-        />
-        {started && (
-          <div
-            className="absolute inset-0"
-            style={{
-              maskImage: "url(/images/mask.gif)",
-              WebkitMaskImage: "url(/images/mask.gif)",
-              maskSize: "cover",
-              WebkitMaskSize: "cover",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-              animation: "fadeIn 4s ease forwards",
-            }}
-          >
-            <img
-              src="/images/background3.png"
-              className="w-full h-full object-cover"
-              alt="Background Color"
-            />
-          </div>
-        )}
-      </div>
 
-      {/* ── Subject── */}
+      <SmokeLayer />
+      {/* ── Background ── */}
       <div
-        className="absolute inset-0 flex items-end justify-center"
+        className="absolute inset-0 w-full h-full"
         style={{
-          zIndex: 5,
-          transform: `translateY(${scrollY * 0.15}px) translate(${mouse.x * 10}px, ${mouse.y * 5}px)`,
-          transition: "transform 0.1s ease-out",
+          background:
+            "radial-gradient(ellipse at center, #1a1a2e 0%, #0d0d0d 55%, #080808 100%)",
+          zIndex: 1,
         }}
       >
-        <div
-          style={{
-            position: "absolute",
-            bottom: "-20%",
-            width: "70%",
-            height: "80%",
-            background:
-              "radial-gradient(ellipse at center, rgba(180,0,0,0.4) 0%, transparent 90%)",
-            filter: "blur(40px)",
-            transition: "opacity 4s ease",
-            opacity: started ? 1 : 0,
-          }}
-        />
+        {particles.map((p) => (
+          <div
+            key={p.id}
+            className="absolute pointer-events-none select-none"
+            style={{
+              fontSize: `${p.size}px`,
+              left: `${p.left}%`,
+              top: `${p.top}%`,
+              color: "grey",
+              animation: `floatUp ${p.duration}s ease-in-out forwards`,
+              fontFamily: "hkhigerei",
+              opacity: 0.8,
+            }}
+          >
+            {p.word}
+          </div>
+        ))}
+      </div>
+
+      {/* ── Subject ── */}
+      <div
+        className="absolute inset-0 flex items-end justify-center z-10"
+        style={{
+          zIndex: 5,
+          // transform: `translateY(${scrollY * 0.15}px) translate(${mouse.x * 10}px, ${mouse.y * 5}px)`,
+        }}
+      >
         <img
-          src="/images/closeup_bg.png"
+          src="/images/front_bg.png"
           alt="Subject"
           className="h-[80vh] w-auto object-contain"
           style={{
             filter: started
               ? "grayscale(0%) brightness(1)"
               : "grayscale(100%) brightness(0.2)",
-            transition: "filter 4s ease",
+            transition: "filter 4s cubic-bezier(0.4, 0, 0.2, 1)",
           }}
         />
       </div>
 
-      {/* ── HomePageText ── */}
+      {/* ── Title ── */}
       <div
-        className="absolute inset-0 pointer-events-none z-2 transition-opacity duration-[1500ms] ease-in-out"
+        className="absolute inset-0 pointer-events-none "
         style={{
+          zIndex: 4,
           opacity: visible ? 1 : 0,
-          transform: `translateY(${scrollY * 0.3}px) translate(${mouse.x * 5}px, ${mouse.y * 3}px)`,
+          transition: "opacity 700ms ease-in-out",
         }}
       >
         <p
-          className="absolute w-full text-center tracking-[0.2em] [text-shadow:2px_2px_4px_rgba(0,0,0,0.5)]"
+          className="absolute top-0 w-full text-center tracking-[0.2em]"
           style={{
             fontFamily: "MingImperial",
             fontSize: "30vh",
+            lineHeight: 1,
             color: "white",
+            textShadow: "0 2px 40px rgba(0,0,0,0.4)",
           }}
         >
           Ronin
         </p>
-
-        <div
-          className="absolute top-[58%] left-[6%] max-w-[420px] px-12 py-8 opacity-80 border border-[#3a2510] border-l-0 border-r-0"
-          style={{
-            background:
-              "linear-gradient(to right, #1a1008, #2d1f0e 8%, #241508 50%, #2d1f0e 92%, #1a1008)",
-          }}
-        >
-          <div
-            className="absolute top-3 left-[10%] right-[10%] h-px"
-            style={{
-              background:
-                "linear-gradient(to right, transparent, #6b4a1e, transparent)",
-            }}
-          />
-          <div
-            className="absolute bottom-3 left-[10%] right-[10%] h-px"
-            style={{
-              background:
-                "linear-gradient(to right, transparent, #6b4a1e, transparent)",
-            }}
-          />
-          <p
-            className="text-white text-center tracking-[0.2em] text-xl"
-            style={{ fontFamily: "Japanese" }}
-          >
-            The path of the Ronin is not one of shadows,,
-            <br />
-            But of cold, relentless purpose.
-          </p>
-        </div>
       </div>
     </section>
   );

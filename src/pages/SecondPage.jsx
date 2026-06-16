@@ -11,17 +11,12 @@ export default function SecondPage({ started: pageVisible }) {
   const mouse = useMouseParallax();
 
   useEffect(() => {
-    audioRef.current = new Audio("/audio/burn.mp3");
-    audioRef.current.volume = 0.9;
-  }, []);
-
-  useEffect(() => {
     if (!pageVisible) return;
     if (started) return;
 
     setStarted(true);
     audioRef.current?.play();
-    setTimeout(() => setVisible(true), 5660);
+    setTimeout(() => setVisible(true), 3000);
   }, [pageVisible]);
 
   return (
@@ -36,26 +31,6 @@ export default function SecondPage({ started: pageVisible }) {
           style={{ filter: "grayscale(100%) brightness(0)" }}
           alt="Background Dark"
         />
-        {started && (
-          <div
-            className="absolute inset-0"
-            style={{
-              maskImage: "url(/images/mask.gif)",
-              WebkitMaskImage: "url(/images/mask.gif)",
-              maskSize: "cover",
-              WebkitMaskSize: "cover",
-              maskRepeat: "no-repeat",
-              WebkitMaskRepeat: "no-repeat",
-              animation: "fadeIn 4s ease forwards",
-            }}
-          >
-            <img
-              src="/images/background5.png"
-              className="w-full h-full object-cover"
-              alt="Background Dark"
-            />
-          </div>
-        )}
       </div>
 
       {/* ── Subject ── */}
@@ -63,8 +38,8 @@ export default function SecondPage({ started: pageVisible }) {
         className="absolute inset-0 flex items-end justify-center"
         style={{
           zIndex: 5,
-          transform: `translateY(${scrollY * 0.15}px) translate(${mouse.x * 10}px, ${mouse.y * 5}px)`,
-          transition: "transform 0.1s ease-out",
+          transform: `translateY(${started ? scrollY * 0.3 : 120}vh) translate(${mouse.x * 20}px, ${mouse.y * 10}px)`,
+          transition: started ? "transform 1.5s ease-out" : "none",
         }}
       >
         <div
@@ -95,10 +70,11 @@ export default function SecondPage({ started: pageVisible }) {
 
       {/* ── Text ── */}
       <div
-        className="absolute inset-0 pointer-events-none z-2 transition-opacity duration-[1500ms] ease-in-out"
+        className="absolute inset-0 pointer-events-none z-2"
         style={{
           opacity: visible ? 1 : 0,
-          transform: `translateY(${scrollY * 0.3}px) translate(${mouse.x * 5}px, ${mouse.y * 3}px)`,
+          transition: "opacity 800ms ease-in-out",
+          transform: `translateX(${mouse.x * 3}px) translateY(${scrollY * 0.1 + mouse.y * 1.5}px)`,
         }}
       >
         <p
